@@ -1,0 +1,1 @@
+この時系列データは次のどのカテゴリーにあてはまりますか: stage_1_param_1_NG, stage_1_param_1_OK, stage_1_param_2_NG, stage_1_param_2_OK, stage_2_param_1_NG, stage_2_param_1_OK, stage_2_param_2_NG, stage_2_param_2_OK, stage_3_param_1_NG, stage_3_param_1_OK, stage_3_param_2_NG, stage_3_param_2_OK

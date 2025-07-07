@@ -1,0 +1,104 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql
+    hostname: my-mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_pass
+      - MYSQL_DATABASE=demo_db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=user_pass
+      - TZ=Asia/Tokyo
+    ports:
+      - 3306:3306
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - langcloud-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    restart: always
+    depends_on:
+      - db
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=db
+      #- PMA_USER=user
+      #- PMA_PASSWORD=user_pass
+    ports:
+      - 3002:80
+    volumes:
+      - phpmyadmin-data:/sessions
+    networks:
+      - langcloud-network
+      
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    environment:
+      - NO_PROXY=0.0.0.0
+      - gpus=all
+      - OLLAMA_CUDA=1
+      - OLLAMA_NUM_THREADS=8
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - 11435:11434
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - langcloud-network
+      
+  app:
+    container_name: app
+    restart: always
+    runtime: nvidia
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - BASE_URL=http://ollama:11434
+      - gpus=all
+    shm_size: '2gb'    # shared memory size
+    env_file:
+      - .env
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    working_dir: /workspaces/llm_lab
+    tty: true
+    volumes: 
+      - ./src:/workspaces/llm_lab/src
+      - ./models:/workspaces/llm_lab/models
+      - ./data:/workspaces/llm_lab/data
+      - ./vector_db:/workspaces/llm_lab/vector_db            
+    ports: 
+      - 8501:8501
+    command: nohup streamlit run src/app.py --server.port 8501
+    depends_on:
+      - ollama
+    networks:
+      - langcloud-network
+    
+volumes:
+  db-data:
+  phpmyadmin-data:
+  ollama: {}
+
+networks:
+  langcloud-network:
+    driver: bridge
+    name: langcloud-network

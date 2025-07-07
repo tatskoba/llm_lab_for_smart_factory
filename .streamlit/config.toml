@@ -1,0 +1,6 @@
+[server]
+# Streamlitでアップロード可能なファイルの最大サイズを指定する
+maxUploadSize = 500
+
+# ファイル変更時に即座に反映させる
+runOnSave = true
