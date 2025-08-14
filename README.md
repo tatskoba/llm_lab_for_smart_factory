@@ -1,7 +1,8 @@
 # AI Collab Worker - LLM Lab for Smart Factory
 
-#### 「AI Collab Worker - LLM Lab for Smart Factory」（ベータ版 v0.0.5）について
+#### 「AI Collab Worker - LLM Lab for Smart Factory」（ベータ版 v0.0.6）について
 ###### 
+![overview](software_info/LLM_Lab_for_Smart_Factory_overview.png "LLM Lab for Smart Factory: software overview")
 ##### ■ 本ソフトウェアの特徴
 1. 工場の生産現場での業務支援を目的として開発された、製造業向け生成AIアプリ開発のためのベーシック・アプリケーションです。ソースコードをカスタマイズすることで、現場の業務に適したアプリケーションを開発できます。
 2. 大規模言語モデル（LLM : Large Language Model、VLM : Vision Language Model）の最新技術を活用し、文書、表形式データ、画像などの複数メディアを使ったAIとの共同作業環境を構築できます。
@@ -15,18 +16,22 @@
 5. ソフトウェア開発者向けの機能
    - PythonとStreamlitをベースにしたGUIソースコードをカスタマイズし、現場に適したブラウザベースのアプリケーションを構築できます。
    - 一部のモデルは、ファインチューニングによって、現場に適したモデルのカスタマイズができます。（phi3.5 visionおよびswin transformer v2のファインチューニングスクリプトを含みます）
+######
+![RAG page](software_info/LLM_Lab_for_Smart_Factory_image.png "LLM Lab for Smart Factory: RAG page")
 
 ##### ■ 本ソフトウェアを利用して開発できる業務アプリのユースケース
 1. 時系列データを画像に変換して、時系列データの異常判定を行う（画像分類）
 2. 時系列データと説明データを組み合わせて、時系列データの異常判定と原因を特定するための質問する（VLMへの質問、ollama VLMモデル）
 3. 外観検査の画像データを自動分類する（Vision Transformerを用いた画像分類）
 4. PDF、CSV、Excelの社内文書について質問する（ollama LLMモデルを使ったRAG）
-5. 一般的なオンライン生成AIサービスに質問する（ChatGPTとの対話）
+5. 画像からのテキスト抽出（OCR）
+6. 一般的なオンライン生成AIサービスに質問する（ChatGPTとの対話）
 
 ##### ■ 本ソフトウェア付属のデモ
-1. デモ名：RAGによる自動車リコール・不具合質問回答デモ（国土交通省 [自動車のリコール・不具合情報](https://renrakuda.mlit.go.jp/renrakuda/top.html) リコール事例30件を利用）
-2. デモ名：生産ライン時系列データ異常判別デモ（画像分類）
-3. デモ名：生産ライン時系列データ異常判別デモ（画像質問回答）
+1. デモ名：[RAGによる自動車リコール・不具合質問回答デモ](software_info/LLM_Lab_for_Smart_Factory_demo1.png)（国土交通省 [自動車のリコール・不具合情報](https://renrakuda.mlit.go.jp/renrakuda/top.html) リコール事例30件を利用）
+2. デモ名：[生産ライン時系列データ異常判別デモ](software_info/LLM_Lab_for_Smart_Factory_demo2.png)（画像分類）
+3. デモ名：[生産ライン時系列データ異常判別デモ](software_info/LLM_Lab_for_Smart_Factory_demo3.png)（画像質問回答）
+4. デモ名：[日本語テキストOCR](software_info/LLM_Lab_for_Smart_Factory_demo4.png)
 
 ##### ■ 本ソフトウェアのライセンス
 1. 本ソフトウェアは、Apache License 2.0です。（*現在、ベータ版でのご提供のため、本ライセンスの下、無償でお使いいただけます*）
@@ -43,4 +48,4 @@
     - お問い合わせ先：https://langcloud.com/contact/
 
 
-更新：2025年7月7日
+更新：2025年8月15日
