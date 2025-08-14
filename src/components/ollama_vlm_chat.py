@@ -23,7 +23,7 @@ class ollama_vlm_chat():
         return encoded_img
     
     # 画像をAPIで解析
-    def analyze_image_by_api(self, prompt):
+    def analyze_image_by_api(self, prompt, type):
     
         # 画像をBase64エンコード
         if st.session_state.uploaded_image_file is not None:
@@ -31,9 +31,19 @@ class ollama_vlm_chat():
         else:
             return "Error: No image file uploaded"
 
+        # VLMかOCRかでモデルを切り替える
+        model = None
+        if type == "vlm":
+            model = st.session_state.ollama_vlm_model_name
+            temp = 0.7
+        elif type == "ocr":
+            model = st.session_state.ollama_ocr_model_name
+            temp = 0.1    # OCRでは0.1を指定する
+
         data = {
-            'model': st.session_state.ollama_vlm_model_name,
+            'model': model,
             'prompt': prompt,
+            "temperature": temp,
             'images': [st.session_state.encoded_image_data],
         }
   

@@ -1,7 +1,7 @@
 import os
 import glob
 import streamlit as st
-from components.ollama_llm_list import ollama_llm_list
+from components.ollama_llm_list import get_ollama_llm_list
 from components.vlm_model_load import vlm_model_load
 from components.vit_model_load import vit_model_load
 
@@ -132,7 +132,6 @@ with cols[0]:
     pass
 with cols[1]:
     vlm_model_name_list = [
-        # "Phi-4-multimodal-instruct",   # preparing for v0.0.5
         "Phi-3.5-vision-instruct",
         "Phi-3.5-vision-finetuning-lora",
         "llava-calm2-siglip",
@@ -217,8 +216,8 @@ st.markdown(
 )
 
 # ollamaコンテナの接続およびLLMモデルの取得状況を確認    
-ollama_llm_list, ollama_vlm_list = ollama_llm_list()
-if len(ollama_llm_list) > 0 and len(ollama_vlm_list) > 0:
+ollama_llm_list, ollama_vlm_list, ollama_ocr_list = get_ollama_llm_list()
+if len(ollama_llm_list) > 0 and len(ollama_vlm_list) > 0 and len(ollama_ocr_list) > 0:
     st.session_state.ollama_availability = True
     st.markdown("- モデルの選択（モデルはダウンロード済み）")
 else:
@@ -234,8 +233,8 @@ if st.session_state.ollama_availability == True:
     with cols[1]:
         # デフォルトのollama LLMモデルの設定
         if "ollama_llm_model_name" not in st.session_state:
-            if "phi4:latest" in ollama_llm_list:
-                st.session_state.ollama_llm_model_name = "phi4:latest"                
+            if "phi4:14b" in ollama_llm_list:
+                st.session_state.ollama_llm_model_name = "phi4:14b"                
                 index = ollama_llm_list.index(st.session_state.ollama_llm_model_name)
             else:
                 index = 0
@@ -273,10 +272,27 @@ if st.session_state.ollama_availability == True:
             key="ollama_param1"
         )
     with cols[3]:
-        pass
+        # デフォルトのOCR用ollama Vision LMモデルの設定
+        if "ollama_ocr_model_name" not in st.session_state:
+            st.session_state.ollama_ocr_model_name = "gemma3:12b"
+            index = ollama_ocr_list.index(st.session_state.ollama_ocr_model_name)
+        else:
+            if "ollama_param9" in st.session_state:
+                if st.session_state.ollama_ocr_model_name != st.session_state.ollama_param9:
+                    index = ollama_ocr_list.index(st.session_state.ollama_param9)
+                else:
+                    index = ollama_ocr_list.index(st.session_state.ollama_ocr_model_name)
+            else:
+                index = ollama_ocr_list.index(st.session_state.ollama_ocr_model_name)
+        st.session_state.ollama_ocr_model_name = st.selectbox(
+            "OCR用VLMの選択",
+            tuple(ollama_ocr_list),
+            index=index,
+            key="ollama_param9"
+        )
 
-    # Vision LLMモデルのシステム設定
-    st.markdown("- モデルのシステム設定")    
+    # RAGのモデル設定
+    st.markdown("- RAGのモデル設定")    
     cols = st.columns([4, 32, 42, 22])
     with cols[0]:
         pass
@@ -305,7 +321,7 @@ if st.session_state.ollama_availability == True:
 
         # ollamaシステムプロンプト設定欄
         input = st.text_area(
-            "ollamaシステムプロンプト",
+            "RAGシステムプロンプト",
             placeholder="入力してください",
             value=system_prompt,
             key="ollama_param3", 

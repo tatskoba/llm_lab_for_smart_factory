@@ -26,7 +26,7 @@ if __name__ == "__main__":
           <div style="position: fixed; bottom: 0; padding: 18px;  color: gray">
                <div style="font-size: 14px; ">AI Collab Worker</div>
                <div style="font-size: 15px; font-weight: bold""> LLM Lab for Smart Factory</div>
-               <div style="font-size: 14px;">version 0.0.5</div>
+               <div style="font-size: 14px;">version 0.0.6</div>
                <div style="font-size: 14px; ">© LangCloud Technologies LLC</div>
           </div>
        """
@@ -59,7 +59,7 @@ if __name__ == "__main__":
                st.Page(page="pages/classify_image.py", title="画像分類", icon=":material/label_important:"),
                st.Page(page="pages/chat_ollama_vlm.py", title="画像質問回答 (ollama)", icon=":material/psychology:"), 
                st.Page(page="pages/chat_vlm.py", title="画像質問回答 (個別VLM)", icon=":material/hub:"),
-
+               st.Page(page="pages/ollama_ocr.py", title="OCR (ollama)", icon=":material/psychology:"), 
           ],
           "オンライン生成AI": [
                st.Page(page="pages/chat_openai.py", title="ChatGPTとの対話", icon=":material/open_with:"),

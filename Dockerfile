@@ -1,10 +1,7 @@
 # Dockerfile
 
 # ベースイメージの指定
-# for CUDA 12.2.2
-FROM nvidia/cuda:12.2.2-cudnn8-devel-ubuntu22.04
-# for CUDA 12.8.1
-# FROM nvidia/cuda:12.8.1-cudnn-devel-ubuntu22.04
+FROM nvidia/cuda:12.8.1-cudnn-devel-ubuntu22.04
 
 # 基本パッケージのインストール
 RUN apt-get update && apt-get install -y python3-pip vim 
@@ -22,11 +19,16 @@ RUN apt-get install -y default-libmysqlclient-dev build-essential pkg-config && 
 RUN apt-get update
 RUN apt-get install -y libopenmpi-dev libaio-dev
 
-# PyTorchのインストール
+# CUDA_HOME設定
+ENV PATH=$PATH:/usr/local/cuda/bin
+RUN echo $PATH
+ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+ENV CUDA_HOME=/usr/local/cuda
+
+# PyTorchのインストール(for RTX40XX)
 RUN pip install --upgrade pip
-# for CUDA 12.2.2
-RUN pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cu121
-# for CUDA 12.8.1
+RUN pip install torch==2.7.0 torchvision==0.22.0 torchaudio==2.7.0 --index-url https://download.pytorch.org/whl/cu128
+# for RTX50XX (nightly版が必要)
 # RUN pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
 
 # ワークスペースのディレクトリを作成

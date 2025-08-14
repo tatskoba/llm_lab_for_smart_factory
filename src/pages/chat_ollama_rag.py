@@ -112,7 +112,7 @@ def chat_ollama_rag():
         with cols[1]:
             st.write("Embedding APIの設定：" + st.session_state["embeddings_api"])
         
-        cols = st.columns([25,33,22,20])
+        cols = st.columns([25,38,17,20])
         with cols[0]:
             # ファイル種類を選択する
             vector_db_file_type_list = ("CSV", "Excel", "PDF")

@@ -2,10 +2,11 @@ import requests
 import streamlit as st
 
 # 対応可能なモデル名をリストで定義
-ollama_llm_lists = ["phi4:latest", "phi3.5:latest", "phi3:latest", "llama3.2:latest"]
-ollama_vlm_lists = ["llava:latest", "llava-phi3:latest","gemma3:12b","llama3.2-vision:latest"]
+ollama_llm_lists = ["phi4:14b", "phi3.5:3.8b", "llama3.2:3b", "gpt-oss:20b"]
+ollama_vlm_lists = ["llava-phi3:3.8b","gemma3:12b","llama3.2-vision:11b"]
+ollama_ocr_lists = ["gemma3:12b", "llama3.2-vision:11b"]
 
-def ollama_llm_list():
+def get_ollama_llm_list():
     # ollamaのモデル一覧を取得
     url = "http://ollama:11434/api/tags"
     headers = {
@@ -25,6 +26,10 @@ def ollama_llm_list():
     vlm_available_models = []
     for key in res_json['models']:
         if key['name'] in ollama_vlm_lists:
-            vlm_available_models.append(key['name']) 
+            vlm_available_models.append(key['name'])
+    ocr_available_models = []
+    for key in res_json['models']:
+        if key['name'] in ollama_ocr_lists:
+            ocr_available_models.append(key['name'])
 
-    return llm_available_models, vlm_available_models
+    return llm_available_models, vlm_available_models, ocr_available_models

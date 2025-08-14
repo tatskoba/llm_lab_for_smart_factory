@@ -32,7 +32,7 @@ def image_process_input():
 
         with st.session_state["thinking_spinner"], st.spinner(f"解析中..."):
             # LLMに質問を投げる
-            agent_text = st.session_state["ollama_vlm_assistant"].analyze_image_by_api(ask_text)
+            agent_text = st.session_state["ollama_vlm_assistant"].analyze_image_by_api(ask_text, "vlm")
             
         st.session_state["ollama_vlm_messages"].append((user_text, True))
         st.session_state["ollama_vlm_messages"].append((agent_text, False))
@@ -51,7 +51,7 @@ def chat_ollama_vlm():
 
     with st.expander("条件設定", expanded=True):
 
-        cols = st.columns([45,15,20,20])
+        cols = st.columns([45,20,15,20])
         with cols[0]:
                 # 画像ファイルをアップロードする
                 uploaded_image_file = st.file_uploader(
@@ -102,8 +102,8 @@ def chat_ollama_vlm():
             st.text_area(
                 "VLM（" + model_name + "）への質問", 
                 key="user_input", 
-                height=110,
-                max_chars=200,
+                height=150,
+                max_chars=1000,
             )
             st.button("質問する", on_click=image_process_input)
 
